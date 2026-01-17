@@ -1,0 +1,9 @@
+
+{
+  "logger": {
+    "level": "debug",
+    "outputPath": "server.log",
+    "appName": "Go_Server: ",
+    "format": "text"
+  }
+}
