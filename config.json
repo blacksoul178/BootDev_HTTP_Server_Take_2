@@ -7,7 +7,6 @@
     "format": "text"
   },
   "server": {
-    "port" : "8080",
-    "filepathRoot": "app"
+    "port" : "8080"
   }
 }
