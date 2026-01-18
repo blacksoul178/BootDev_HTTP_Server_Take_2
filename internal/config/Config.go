@@ -8,7 +8,9 @@ import (
 )
 
 type AppConfig struct {
+	Server ServerCfg `json:"server"`
 	Logger LoggerCfg `json:"logger"`
+
 	// Other configs
 }
 
@@ -18,6 +20,10 @@ type LoggerCfg struct {
 	Format     string `json:"format"`     // e.g., "json", "text"
 	AppName    string `json:"appName"`    //e.g., app name in the log file
 	// Add more fields as needed, like `MaxSize`, `MaxBackups` for log rotation
+}
+
+type ServerCfg struct {
+	Port string `json:"port"` //server runs on port
 }
 
 func LoadAppConfig(configPath string) (AppConfig, error) {

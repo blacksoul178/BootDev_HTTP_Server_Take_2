@@ -2,6 +2,7 @@ package main
 
 import (
 	"HTTP_Server_2/internal/config"
+	"HTTP_Server_2/internal/handlers"
 	"HTTP_Server_2/internal/logger"
 	"log"
 	"net/http"
@@ -20,19 +21,17 @@ func main() {
 		log.Fatalf("Failed to initialize logger: %v", err)
 	}
 
-	const port = "8080"
-	const filepathRoot = "."
-
 	mux := http.NewServeMux()
+	handlers.App(mux)
 
 	srv := &http.Server{
-		Addr:    ":" + port,
+		Addr:    ":" + appConfig.Server.Port,
 		Handler: mux,
 	}
 
-	mux.Handle("/", http.FileServer(http.Dir(filepathRoot)))
+	mux.HandleFunc("/healthz", handlers.Healthz)
 
-	log.Printf("Serving on port: %s\n", port)
+	log.Printf("Serving on port: %s\n", appConfig.Server.Port)
 	log.Fatal(srv.ListenAndServe())
 
 }
