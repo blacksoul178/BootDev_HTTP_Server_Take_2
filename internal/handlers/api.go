@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 	"sync/atomic"
 )
 
@@ -58,6 +59,30 @@ func validateChirp(w http.ResponseWriter, r *http.Request) {
 	type validResponse struct {
 		Valid bool `json:"valid"`
 	}
-	respondWithJSON(w, http.StatusOK, validResponse{Valid: true})
+	type returnVals struct {
+		CleanedBody string `json:"cleaned_body"`
+	}
+	cleaned := profaneCheck(chirp.Body)
+
+	respondWithJSON(w, http.StatusOK, returnVals{CleanedBody: cleaned})
+
+}
+
+var profaneWords = map[string]bool{
+	"kerfuffle": true,
+	"sharbert":  true,
+	"fornax":    true,
+}
+
+func profaneCheck(body string) string {
+	words := strings.Split(body, " ")
+
+	for i, w := range words {
+		lw := strings.ToLower(w)
+		if _, ok := profaneWords[lw]; ok {
+			words[i] = "****"
+		}
+	}
+	return strings.Join(words, " ")
 
 }
